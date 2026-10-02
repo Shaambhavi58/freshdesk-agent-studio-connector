@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "freshdesk-agent-studio-connector"
+version = "1.0.0"
+description = "Read-only Freshdesk ticket access through the Model Context Protocol."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { file = "LICENSE" }
+authors = [{ name = "Freshdesk Agent Studio Connector contributors" }]
+keywords = ["freshdesk", "mcp", "support", "tickets"]
+dependencies = [
+  "httpx>=0.27,<1",
+  "mcp>=1.9,<2",
+  "pydantic>=2.7,<3",
+  "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8,<9",
+  "pytest-asyncio>=0.23,<2",
+  "respx>=0.21,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/freshdesk_connector"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"fixtures/fictional_tickets.json" = "freshdesk_connector/fixtures/fictional_tickets.json"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/",
+  "scripts/",
+  "tests/",
+  "fixtures/",
+  "README.md",
+  "LIMITATIONS.md",
+  "LICENSE",
+  ".env.example",
+  "Dockerfile",
+  "pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
